@@ -5,6 +5,8 @@ import com.entities.Customer;
 import com.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 
 import java.util.List;
 
@@ -19,6 +21,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    @Transactional
     public List<Customer> getCustomers() {
         return customer.getCustomers();
     }
