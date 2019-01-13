@@ -7,13 +7,14 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Repository
 public class CustomerDAOImpl implements CustomerDAO {
     // need to inject the session factory
-    private SessionFactory sessionFactory;
+    private final SessionFactory sessionFactory;
 
     @Autowired
     public CustomerDAOImpl(SessionFactory sessionFactory) {
@@ -28,11 +29,17 @@ public class CustomerDAOImpl implements CustomerDAO {
 
         // create a query
         Query<Customer> theQuery =
-                currentSession.createQuery("from Customer", Customer.class);
+                currentSession.createQuery("from Customer order by lastName", Customer.class);
 
         // execute query and get result list
 
         // return the results
         return theQuery.getResultList();
+    }
+
+    @Override
+    public void save(Customer customer) {
+        Session session = sessionFactory.getCurrentSession();
+        session.save(customer);
     }
 }

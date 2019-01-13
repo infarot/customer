@@ -52,8 +52,6 @@ public class DatabaseConfiguration {
         Properties hibernateProperties = new Properties();
         hibernateProperties.put("hibernate.dialect", environment.getProperty("hibernate.dialect"));
         hibernateProperties.put("hibernate.show_sql", environment.getProperty("hibernate.show_sql"));
-        hibernateProperties.put("hibernate.connection.characterEncoding", environment.getProperty("hibernate.connection.characterEncoding"));
-        hibernateProperties.put("hibernate.connection.useUnicode", environment.getProperty("hibernate.connection.useUnicode"));
         localSessionFactoryBean.setHibernateProperties(hibernateProperties);
         return localSessionFactoryBean;
     }

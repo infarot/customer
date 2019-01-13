@@ -25,4 +25,10 @@ public class CustomerServiceImpl implements CustomerService {
     public List<Customer> getCustomers() {
         return customer.getCustomers();
     }
+
+    @Override
+    @Transactional
+    public void save(Customer customer) {
+        this.customer.save(customer);
+    }
 }
