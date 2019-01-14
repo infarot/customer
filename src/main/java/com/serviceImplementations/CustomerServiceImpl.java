@@ -31,4 +31,22 @@ public class CustomerServiceImpl implements CustomerService {
     public void save(Customer customer) {
         this.customer.save(customer);
     }
+
+    @Override
+    @Transactional
+    public Customer getCustomer(int id) {
+        return customer.getCustomer(id);
+    }
+
+    @Override
+    @Transactional
+    public void delete(int id) {
+        customer.delete(id);
+    }
+
+    @Override
+    @Transactional
+    public List<Customer> searchCustomers(String name) {
+        return customer.searchCustomers(name);
+    }
 }
