@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Aspect
-public class CRMLoggingAspect {
+public class CRMAspect {
 
     @Pointcut("execution(* com.controller.*.*(..))")
     public void controllerPackage() {
