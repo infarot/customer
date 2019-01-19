@@ -1,8 +1,7 @@
-package com.serviceImplementations;
+package com.service;
 
-import com.DAO.CustomerDAO;
+import com.dao.CustomerDAO;
 import com.entities.Customer;
-import com.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
