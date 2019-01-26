@@ -1,7 +1,9 @@
 package com.config;
 
 
-import com.mchange.v2.c3p0.ComboPooledDataSource;
+
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,8 +12,6 @@ import org.springframework.core.env.Environment;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-
-import java.beans.PropertyVetoException;
 import java.util.Properties;
 
 @Configuration
@@ -25,29 +25,24 @@ public class DatabaseConfiguration {
         this.environment = environment;
     }
 
-    @Bean(destroyMethod = "close")
-    public ComboPooledDataSource myDataSource() {
-        ComboPooledDataSource comboPooledDataSource = new ComboPooledDataSource();
-        try {
-            comboPooledDataSource.setDriverClass(environment.getProperty("database.driver"));
-        } catch (PropertyVetoException e) {
-            e.printStackTrace();
-        }
-        comboPooledDataSource.setJdbcUrl(environment.getProperty("database.jdbcurl"));
-        comboPooledDataSource.setUser(environment.getProperty("database.user"));
-        comboPooledDataSource.setPassword(environment.getProperty("database.password"));
-        comboPooledDataSource.setMinPoolSize(Integer.parseInt(environment.getProperty("database.maxpoolsize")));
-        comboPooledDataSource.setMaxPoolSize(Integer.parseInt(environment.getProperty("database.minpoolsize")));
-        comboPooledDataSource.setMaxIdleTime(Integer.parseInt(environment.getProperty("database.maxidletime")));
-
-        return comboPooledDataSource;
+    @Bean
+    public HikariDataSource hikariDataSource(){
+        HikariConfig config = new HikariConfig();
+        config.setJdbcUrl(environment.getProperty("database.jdbcurl"));
+        config.setUsername(environment.getProperty("database.user"));
+        config.setPassword(environment.getProperty("database.password"));
+        config.setDriverClassName(environment.getProperty("database.driver"));
+        config.addDataSourceProperty("cachePrepStmts", "true");
+        config.addDataSourceProperty("prepStmtCacheSize", "250");
+        config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+        return new HikariDataSource(config);
     }
 
 
     @Bean
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean localSessionFactoryBean = new LocalSessionFactoryBean();
-        localSessionFactoryBean.setDataSource(myDataSource());
+        localSessionFactoryBean.setDataSource(hikariDataSource());
         localSessionFactoryBean.setPackagesToScan(environment.getProperty("dbscanpackage"));
         Properties hibernateProperties = new Properties();
         hibernateProperties.put("hibernate.dialect", environment.getProperty("hibernate.dialect"));
