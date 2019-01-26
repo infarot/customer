@@ -45,6 +45,7 @@ public class DatabaseConfiguration {
         localSessionFactoryBean.setDataSource(hikariDataSource());
         localSessionFactoryBean.setPackagesToScan(environment.getProperty("dbscanpackage"));
         Properties hibernateProperties = new Properties();
+        //hibernateProperties.put("hibernate.hbm2ddl.auto", "create");
         hibernateProperties.put("hibernate.dialect", environment.getProperty("hibernate.dialect"));
         hibernateProperties.put("hibernate.show_sql", environment.getProperty("hibernate.show_sql"));
         localSessionFactoryBean.setHibernateProperties(hibernateProperties);
