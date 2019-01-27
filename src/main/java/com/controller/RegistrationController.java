@@ -32,8 +32,12 @@ public class RegistrationController {
     public String processRegistration(@ModelAttribute("user") User user){
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         Role role = new Role();
+        Role role1 = new Role();
+        role.setUser(user);
         role.setRole(Roles.ROLE_MANAGER);
-        user.setRoles(Arrays.asList(role));
+        role1.setUser(user);
+        role1.setRole(Roles.ROLE_ADMIN);
+        user.setRoles(Arrays.asList(role, role1));
         userService.saveUser(user);
         return "registration-form";
     }

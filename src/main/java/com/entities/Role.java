@@ -1,6 +1,7 @@
 package com.entities;
 
 import com.enums.Roles;
+import org.hibernate.mapping.Join;
 
 import javax.persistence.*;
 
@@ -16,12 +17,24 @@ public class Role {
     @Column(name = "role")
     private Roles role;
 
+    @ManyToOne
+    @JoinColumn(name = "username")
+    private User user;
+
     @Override
     public String toString() {
         return "Role{" +
                 "id=" + id +
                 ", role=" + role +
                 '}';
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public int getId() {
